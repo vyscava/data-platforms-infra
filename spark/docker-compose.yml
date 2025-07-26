@@ -1,0 +1,63 @@
+name: spark-stack
+services:
+  # https://hub.docker.com/r/bitnami/spark
+  spark-master:
+    # image: bitnami/spark:latest@sha256:44c33e33308da6e27f8317a683b24ba3186374e4144a3bb094f7e6ee80ade408
+    build:
+      context: /home/admin/spark
+      dockerfile: Dockerfile.spark
+    container_name: spark-master
+    hostname: ${SPARK_MASTER_HOSTNAME}
+    environment:
+      SPARK_MODE: master
+      SPARK_MASTER_HOST: ${SPARK_MASTER_HOSTNAME}
+      SPARK_LOCAL_IP: ${SPARK_LOCAL_IP}
+      SPARK_MASTER_WEBUI_PORT: ${SPARK_MASTER_WEBUI_PORT}
+      AWS_REGION: ${AWS_REGION}
+      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - /home/admin/spark/spark-defaults.conf:/opt/bitnami/spark/conf/spark-defaults.conf
+      - /mnt/nfs/dockers/jupyter:/home/datapro/notebooks
+    # ports:
+    #   - "7077:7077"
+    #   - "8081:8081" # Master UI
+    #   - "8888:8888" # Jupyter UI
+    #   - "4040:4040" # Driver port (set with spark.driver.port)
+    #   - "7079:7079" # (Optional) Block manager port
+    command: >
+      bash -c "
+        /opt/bitnami/scripts/spark/entrypoint.sh /opt/bitnami/scripts/spark/run.sh &
+        /opt/bitnami/python/bin/jupyter lab --ip=0.0.0.0 --port=8888 --allow-root --no-browser --ServerApp.token=''
+      "
+    network_mode: host
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 3G
+
+  spark-worker:
+    # image: bitnami/spark:latest@sha256:44c33e33308da6e27f8317a683b24ba3186374e4144a3bb094f7e6ee80ade408
+    build:
+      context: /home/admin/spark
+      dockerfile: Dockerfile.spark
+    environment:
+      SPARK_MODE: worker
+      SPARK_MASTER_URL: ${SPARK_MASTER_URL}
+      SPARK_LOCAL_IP: ${SPARK_LOCAL_IP}
+      AWS_REGION: ${AWS_REGION}
+      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - /home/admin/spark/spark-defaults.conf:/opt/bitnami/spark/conf/spark-defaults.conf
+    network_mode: host
+    depends_on:
+      - spark-master
+    deploy:
+      mode: replicated
+      replicas: 2
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4G

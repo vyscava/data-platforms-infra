@@ -1,0 +1,1 @@
+Before you spin it up you need to create the bucket where the ICEBERG Catalog will be created. The bucket name is inside ICEBERG_WAREHOUSE env variable. Once you know its name it is time to create the bucket and change the policy
