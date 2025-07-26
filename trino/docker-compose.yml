@@ -1,0 +1,46 @@
+name: trino-stack
+services:
+  trino-coordinator:
+    hostname: trino-coordinator
+    image: 'trinodb/trino:455'
+    container_name: trino-coordinator
+    restart: unless-stopped
+    ports:
+      - '8080:8080'
+    volumes:
+      # - ./configuration/trino/coordinator/etc/trino:/etc/trino
+      # - ./configuration/trino/shared/catalog:/etc/trino/catalog
+      # - ./configuration/shared:/etc/trino/conf
+      - /home/admin/trino/coordinator/etc/trino:/etc/trino
+      - /home/admin/trino/catalog_configuration:/etc/trino/catalog
+      - /home/admin/trino/shared:/etc/trino/conf
+      # - C:\trino\configuration\trino/coordinator\etc\trino:/etc/trino
+      # - C:\trino\configuration\trino/shared\catalog:/etc/trino/catalog
+      # - C:\trino\configuration\shared:/etc/trino/conf
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2G
+    # command: sleep infinity
+
+  trino-worker:
+    image: "trinodb/trino:455"
+    restart: unless-stopped
+    volumes:
+      # - ./configuration/trino/worker/etc/trino:/etc/trino
+      # - ./configuration/trino/shared/catalog:/etc/trino/catalog
+      # - ./configuration/shared:/etc/trino/conf
+      - /home/admin/trino/worker/etc/trino:/etc/trino
+      - /home/admin/trino/catalog_configuration:/etc/trino/catalog
+      - /home/admin/trino/shared:/etc/trino/conf
+      # - C:\trino\configuration\trino/worker\etc\trino:/etc/trino
+      # - C:\trino\configuration\trino/shared\catalog:/etc/trino/catalog
+      # - C:\trino\configuration\shared:/etc/trino/conf
+    deploy:
+      mode: replicated
+      replicas: 2
+      resources:
+        limits:
+          cpus: "2"
+          memory: 3G

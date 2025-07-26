@@ -1,0 +1,31 @@
+name: hive-metastore-stack
+services:
+  hive-metastore:
+    # https://hub.docker.com/r/apache/hive
+    image: apache/hive:4.0.0
+    container_name: hive-metastore
+    restart: unless-stopped
+    # user: "1026:100"
+    ports:
+      - '9083:9083'
+    environment:
+      SERVICE_NAME: ${HIVE_CONF_SERVICE_NAME}
+      DB_DRIVER: ${HIVE_CONF_DB_DRIVER}
+      HIVE_CUSTOM_CONF_DIR: ${HIVE_CONF_HIVE_CUSTOM_CONF_DIR}
+      HADOOP_CLASSPATH: ${HIVE_CONF_HADOOP_CLASSPATH}
+    volumes:
+      # Keeping warehouse in local
+      - metastore-data:/opt/hive/data/warehouse
+      # Shared Configuration between Trino and Metastore
+      # - ./configuration/shared:/hive_custom_conf:ro
+      - /volume2/dockers/hive_metastore/configuration/shared:/hive_custom_conf:ro
+      # Providing JDBC Drivers
+      # - ./configuration/metastore/jdbc_drivers/postgresql-42.5.1.jar:/opt/hive/lib/postgresql-42.5.1.jar:ro
+      - /volume2/dockers/hive_metastore/configuration/metastore/jdbc_drivers/postgresql-42.5.1.jar:/opt/hive/lib/postgresql-42.5.1.jar:ro
+      # - ./configuration/metastore/jdbc_drivers/mysql-connector-java-8.0.30.jar:/opt/hive/lib/mysql-connector-java-8.0.30.jar:ro
+      - /volume2/dockers/hive_metastore/configuration/metastore/jdbc_drivers/mysql-connector-java-8.0.30.jar:/opt/hive/lib/mysql-connector-java-8.0.30.jar:ro
+    mem_limit: 500m
+    # cpus: 2.0
+
+volumes:
+  metastore-data:

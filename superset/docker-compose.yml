@@ -1,0 +1,42 @@
+name: superset-stack
+services:  
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: unless-stopped
+    hostname: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 50
+
+  superset:
+    build: /volume2/dockers/superset/
+    hostname: superset
+    container_name: superset
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8088:8088"
+    volumes:
+      - superset-data:/app/superset_home
+    depends_on:
+      redis:
+        condition: service_healthy
+    mem_limit: 1G
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "1"
+    #       memory: 1G
+
+volumes:
+  superset-data:
+    driver: local
+  redis-data:
+    driver: local
