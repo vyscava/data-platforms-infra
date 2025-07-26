@@ -1,0 +1,19 @@
+name: iceberg-catalog-stack
+services:
+  iceberg-rest:
+    # https://hub.docker.com/r/tabulario/iceberg-rest
+    # Ref: https://iceberg.apache.org/spark-quickstart/#docker-compose 
+    image: tabulario/iceberg-rest:latest
+    container_name: iceberg-rest
+    restart: unless-stopped
+    ports:
+      - "8181:8181"  # Expose REST Catalog on port 8181
+    environment:
+      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+      AWS_REGION: ${AWS_REGION}
+      CATALOG_NAME: ${ICEBERG_CATALOG_NAME}
+      CATALOG_WAREHOUSE: ${ICEBERG_WAREHOUSE}
+      CATALOG_IO__IMPL: org.apache.iceberg.aws.s3.S3FileIO
+      CATALOG_S3_ENDPOINT: ${MINIO_ENDPOINT}
+

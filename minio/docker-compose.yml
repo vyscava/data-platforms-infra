@@ -1,0 +1,21 @@
+name: minio-stack
+services:
+  minio:
+    image: minio/minio:latest@sha256:d249d1fb6966de4d8ad26c04754b545205ff15a62e4fd19ebd0f26fa5baacbc0
+    container_name: minio
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      # MINIO_BROWSER_REDIRECT_URL: https://s3.vitorgarbim.me
+      # MINIO_SERVER_URL: https://s3-api.local.vitorgarbim.me
+    volumes:
+      - /volume3/files/Minio:/data
+      - /volume2/dockers/minio/config:/root/.minio
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
