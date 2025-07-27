@@ -20,7 +20,12 @@ services:
     hostname: superset
     container_name: superset
     restart: unless-stopped
-    env_file: .env
+    environment:
+      POSTGRESS_HOSTNAME: ${POSTGRESS_HOSTNAME}
+      POSTGRESS_HOSTNAME_PORT: ${POSTGRESS_HOSTNAME_PORT}
+      PSQL_SUPERSET_USER: ${PSQL_SUPERSET_USER}
+      PSQL_SUPERSET_PASSWORD: ${PSQL_SUPERSET_PASSWORD}
+      PSQL_SUPERSET_DB: ${PSQL_SUPERSET_DB}
     ports:
       - "8088:8088"
     volumes:
