@@ -5,7 +5,7 @@ services:
     # image: bitnami/spark:latest@sha256:44c33e33308da6e27f8317a683b24ba3186374e4144a3bb094f7e6ee80ade408
     build:
       context: /home/admin/spark
-      dockerfile: Dockerfile.spark
+      dockerfile: Dockerfile
     container_name: spark-master
     hostname: ${SPARK_MASTER_HOSTNAME}
     environment:
@@ -41,7 +41,7 @@ services:
     # image: bitnami/spark:latest@sha256:44c33e33308da6e27f8317a683b24ba3186374e4144a3bb094f7e6ee80ade408
     build:
       context: /home/admin/spark
-      dockerfile: Dockerfile.spark
+      dockerfile: Dockerfile
     environment:
       SPARK_MODE: worker
       SPARK_MASTER_URL: ${SPARK_MASTER_URL}
