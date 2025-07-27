@@ -8,8 +8,6 @@ services:
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-      # MINIO_BROWSER_REDIRECT_URL: https://s3.vitorgarbim.me
-      # MINIO_SERVER_URL: https://s3-api.local.vitorgarbim.me
     volumes:
       - /volume3/files/Minio:/data
       - /volume2/dockers/minio/config:/root/.minio
