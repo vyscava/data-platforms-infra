@@ -90,22 +90,15 @@ RUN pip install \
 ########################################
 # INSTALLING S3 Supporting files
 
-# SPARK 4
-# RUN curl https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-core/1.12.720/aws-java-sdk-core-1.12.720.jar \
-#  --output /opt/bitnami/spark/jars/aws-java-sdk-core-1.12.720.jar
-
 # Safe for Spark 3.5.6 and Hadoop 3.3.x
 RUN curl -sSL https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.603/aws-java-sdk-bundle-1.12.603.jar \
   -o /opt/bitnami/spark/jars/aws-java-sdk-bundle-1.12.603.jar
-
- # SPARK 4
-# RUN curl https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/2.24.6/bundle-2.24.6.jar \
-#  --output /opt/bitnami/spark/jars/bundle-2.24.6.jar
 
 ########################################
 # INSTALLING Iceberg Support
 
 # https://iceberg.apache.org/docs/latest/spark-getting-started/
+
 # Spark 3.5
 RUN curl https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-spark-runtime-3.5_2.12/1.9.2/iceberg-spark-runtime-3.5_2.12-1.9.2.jar \
  --output /opt/bitnami/spark/jars/iceberg-spark-runtime-3.5_2.12-1.9.2.jar
@@ -127,24 +120,9 @@ RUN curl https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.3/postgre
 RUN curl https://repo1.maven.org/maven2/io/openlineage/openlineage-spark_2.13/1.36.0/openlineage-spark_2.13-1.36.0.jar \
  --output /opt/bitnami/spark/jars/openlineage-spark_2.13-1.36.0.jar
 
-# Creating User for Home and Jupyter
-# ARG NB_USER=datapro
-# ARG NB_UID=1024
-# ARG NB_GID=100
-# ENV HOME=/home/${NB_USER}
-
-# RUN getent group ${NB_GID} || groupadd -g ${NB_GID} ${NB_USER} && \
-#     useradd -m -s /bin/bash -N -u ${NB_UID} -g ${NB_GID} ${NB_USER} && \
-#     mkdir -p ${HOME}/notebooks && \
-#     chown -R ${NB_UID}:${NB_GID} ${HOME}
-
 #  Creating temp folder for Spark Logs
 RUN mkdir -p /tmp/spark-events && \
  chown -R ${NB_UID}:${NB_GID} /tmp/spark-events
-
-# Set user and working directory
-# USER ${NB_UID}
-# WORKDIR /home/${NB_USER}/notebooks
 
 # Making sure permissions of jar files are correct
 RUN chown -R ${NB_UID}:${NB_GID} /opt/bitnami/spark/jars
