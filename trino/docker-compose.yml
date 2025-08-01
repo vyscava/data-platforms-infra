@@ -2,7 +2,7 @@ name: trino-stack
 services:
   trino-coordinator:
     hostname: trino-coordinator
-    image: 'trinodb/trino:455'
+    image: 'trinodb/trino:476'
     container_name: trino-coordinator
     restart: unless-stopped
     ports:
@@ -19,7 +19,7 @@ services:
     # command: sleep infinity
 
   trino-worker:
-    image: 'trinodb/trino:455'
+    image: 'trinodb/trino:476'
     restart: unless-stopped
     volumes:
       - /home/admin/trino/worker/etc/trino:/etc/trino
