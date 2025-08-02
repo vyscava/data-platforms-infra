@@ -1,5 +1,5 @@
 # FROM bitnami/spark:4.0.0@sha256:b3628303f812df47600b51fc632de017cac86e685255b5461d3914e7eaa6da82
-FROM bitnami/spark:3.5.6@sha256:353e23d86c7952781042b4e91d1e2b018335f565430e449fff017269a273097f
+FROM bitnami/spark:4.0.0@sha256:d528e9ba60d1ae3e31eab9981d3f356a85a19336251156abd9c59496e04cc763
 
 USER root
 # Set environment for consistent user identity
