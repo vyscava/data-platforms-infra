@@ -1,0 +1,95 @@
+# === Jupyter Core ===
+# I tried using the Jupyverse as it is the newest Jupyter Server however found some bugs
+# on starting with lab extensions, at the moment I prefer lab extensions then the new
+# version, so I will use the jupyterlab
+# Ref: https://jupyterlab.readthedocs.io/en/4.4.x/getting_started/installation.html
+# Ref: https://github.com/jupyter-server/jupyverse/
+# jupyverse[jupyterlab,auth]
+# jupyter-collaboration
+jupyterlab
+
+# Widgets & Extensions
+ipywidgets
+jupyterlab-vim
+jupyterlab-spellchecker
+jupyterlab-git
+
+# Language Servers
+# Ref: https://jupyterlab-lsp.readthedocs.io/en/latest/Language%20Servers.html
+jupyterlab-lsp
+jedi-language-server
+jupysql
+
+# Jupyter Scala Core
+spylon-kernel
+
+# === Data Processing & Viz ===
+pandas
+numpy
+pyarrow
+matplotlib
+seaborn
+plotly
+openpyxl
+xlrd
+tqdm
+rich
+
+# === Geospatial & Graph ===
+folium
+geopandas
+networkx
+
+# === ML & AI ===
+# scikit-learn
+# xgboost
+# lightgbm
+# statsmodels
+# torch
+# torchvision
+# torchaudio
+# tensorflow
+# keras
+# transformers
+# accelerate
+# fastai
+# flax
+# optuna
+# mlflow
+# shap
+# lime
+# datasets
+# sentence-transformers
+
+# === RAG / Vector DBs ===
+# faiss-cpu
+# chromadb
+# llama-index
+# langchain
+
+# === Spark / Big Data ===
+findspark
+pyiceberg[pyarrow,pandas]
+
+# === SQL / DBs ===
+sqlalchemy
+psycopg2-binary
+pymongo
+mysql-connector-python
+
+# === Cloud / S3 ===
+boto3
+s3fs
+minio
+
+# === Lineage ===
+openlineage-python
+openlineage-integration-common
+
+# === Misc ===
+requests
+polars
+pycolor
+scipy
+grpcio
+# papermil
