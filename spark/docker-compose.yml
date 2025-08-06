@@ -5,6 +5,7 @@ services:
       context: /home/admin/spark-custom
       dockerfile: Dockerfile
     container_name: spark-master
+    # hostname: ${SPARK_MASTER_HOSTNAME}
     environment:
       SPARK_MODE: master
       SPARK_MASTER_HOST: ${SPARK_MASTER_HOST}
@@ -21,14 +22,14 @@ services:
     #   - "7077:7077"
     #   - "8081:8081" # Master UI
     #   - "8888:8888" # Jupyter UI
-    #   - "4040:4040" # Driver port (set with spark.driver.port)
+    #   - "4040:4040" # Driver port (set with sparek.driver.port)
     #   - "7079:7079" # (Optional) Block manager port
     network_mode: host
     deploy:
       resources:
         limits:
           cpus: "2"
-          memory: 3G
+          memory: 4G
 
   spark-worker:
     build:
@@ -51,5 +52,5 @@ services:
       replicas: 2
       resources:
         limits:
-          cpus: "2"
+          cpus: "4"
           memory: 4G
