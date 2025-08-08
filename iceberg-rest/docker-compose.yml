@@ -3,7 +3,7 @@ services:
   iceberg-rest:
     # https://hub.docker.com/r/tabulario/iceberg-rest
     # Ref: https://iceberg.apache.org/spark-quickstart/#docker-compose 
-    image: tabulario/iceberg-rest:latest
+    image: tabulario/iceberg-rest:latest@sha256:3b7d31bdfec626b68e97531c9778a1b9119659e456fe28545a49f6aa6a9ce472
     container_name: iceberg-rest
     restart: unless-stopped
     ports:
@@ -16,4 +16,8 @@ services:
       CATALOG_WAREHOUSE: ${ICEBERG_WAREHOUSE}
       CATALOG_IO__IMPL: org.apache.iceberg.aws.s3.S3FileIO
       CATALOG_S3_ENDPOINT: ${MINIO_ENDPOINT}
+      CATALOG_CATALOG__IMPL: org.apache.iceberg.jdbc.JdbcCatalog
+      CATALOG_URI: jdbc:postgresql://${PSQL_ICEBERG_USER}:${PSQL_ICEBERG_PASSWORD}@${POSTGRESS_HOSTNAME}:${POSTGRESS_HOSTNAME_PORT}/${PSQL_AIRFLOW_DB}
+      CATALOG_JDBC_USER: ${PSQL_ICEBERG_USER}
+      CATALOG_JDBC_PASSWORD: ${PSQL_ICEBERG_PASSWORD}
 
