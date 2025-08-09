@@ -3,6 +3,9 @@ x-airflow-common:
   build:
     context: /home/admin/airflow
     dockerfile: Dockerfile
+  dns:
+      - 192.168.50.4
+  network_mode: host
   # image: apache/airflow:latest@sha256:66d35503f78e8c87de2db43f0a3311efd26a5d34584599509a8bd90fb308adc7
   # restart: unless-stopped
   environment:
@@ -11,8 +14,7 @@ x-airflow-common:
     AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${PSQL_AIRFLOW_USER}:${PSQL_AIRFLOW_PASSWORD}@${POSTGRESS_HOSTNAME}:${POSTGRESS_HOSTNAME_PORT}/${PSQL_AIRFLOW_DB}
     AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${PSQL_AIRFLOW_USER}:${PSQL_AIRFLOW_PASSWORD}@${POSTGRESS_HOSTNAME}:${POSTGRESS_HOSTNAME_PORT}/${PSQL_AIRFLOW_DB}
-    AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
-    # AIRFLOW__CORE__FERNET_KEY: 
+    AIRFLOW__CELERY__BROKER_URL: redis://:@airflow-redis.local.vitorgarbim.me:6379/0
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__CORE__EXECUTION_API_SERVER_URL: 'http://${AIRFLOW_HOSTNAME}:8080/execution/'
@@ -26,6 +28,11 @@ x-airflow-common:
     - /home/admin/airflow/airflow-resources/plugins:/opt/airflow/plugins
     - /home/admin/airflow/airflow-resources/config:/opt/airflow/config
     - /home/admin/airflow/airflow-resources/logs:/opt/airflow/logs
+    - /home/admin/airflow/airflow-resources/spark-events:/opt/airflow/spark-events
+    # Update Airflow Spark Driver Configuration
+    - /home/admin/airflow/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
+    # Enable Spark Submit scripts to be all located in the same place
+    - /mnt/nfs/dockers/spark/scripts:/opt/spark-apps
   # user: "${AIRFLOW_UID:-50000}:0"
   # Aligned with my computer user id + nfs user permissions
   # Group always need to be 0 == root so container can access resources inside
@@ -42,8 +49,11 @@ services:
     container_name: redis
     restart: unless-stopped
     hostname: redis
-    ports:
-      - "6379:6379"
+    # ports:
+    #   - "6379:6379"
+    dns:
+      - 192.168.50.4
+    network_mode: host
     volumes:
       - redis-data:/data
     healthcheck:
@@ -60,11 +70,10 @@ services:
     <<: *airflow-common
     container_name: airflow
     hostname: ${AIRFLOW_HOSTNAME}
-    # command: webserver
     command: api-server
     restart: unless-stopped
-    ports:
-      - "8080:8080"
+    # ports:
+    #   - "8080:8080"
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/api/v2/version"]
       interval: 30s
@@ -132,6 +141,14 @@ services:
       # Required to handle warm shutdown of the celery workers properly
       # See https://airflow.apache.org/docs/docker-stack/entrypoint.html#signal-propagation
       DUMB_INIT_SETSID: "0"
+      SPARK_LOCAL_IP: ${SPARK_LOCAL_IP}
+      SPARK_MASTER_WEBUI_PORT: ${SPARK_MASTER_WEBUI_PORT}
+      AWS_REGION: ${AWS_REGION}
+      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+    # port:
+    #   - "8081-8090:8081-8090"
+    #   - "4000-5000:4000-5000"
     healthcheck:
       test:
         - "CMD-SHELL"
@@ -177,8 +194,8 @@ services:
     <<: *airflow-common
     command: celery flower
     restart: unless-stopped
-    ports:
-      - "5555:5555"
+    # ports:
+    #   - "5555:5555"
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:5555/"]
       interval: 30s
