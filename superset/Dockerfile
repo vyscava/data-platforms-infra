@@ -2,18 +2,19 @@ FROM apache/superset:latest@sha256:31d965435b462361d2b8207595eff28f54492778d0afd
 # Switching to root to install the required packages
 USER root
 
-RUN pip install --upgrade pip
+RUN pip install --no-cache-dir --upgrade pip
 
 # Example: installing the MySQL driver to connect to the metadata database
 # if you prefer Postgres, you may want to use `psycopg2-binary` instead
 # Ref: https://superset.apache.org/docs/configuration/databases
-RUN pip install flask-limiter
-RUN pip install redis
-RUN pip install mysqlclient
-RUN pip install psycopg2-binary
-RUN pip install sqlalchemy-trino
-RUN pip install pyhive
-RUN pip install trino
+RUN pip install --no-cache-dir \
+    flask-limiter \
+    redis \
+    mysqlclient \
+    psycopg2-binary \
+    sqlalchemy-trino \
+    pyhive \
+    trino
 
 # Updating Superset configuration
 # https://superset.apache.org/docs/configuration/configuring-superset/
