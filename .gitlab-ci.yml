@@ -1,0 +1,8 @@
+include:
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+variables:
+  GIT_DEPTH: "0"
+  SECRET_DETECTION_EXCLUDED_PATHS: "docs/**/*.md,tests/fixtures/**"
+  # Optional: scan full history (slow, first time)
+  SECRET_DETECTION_HISTORIC_SCAN: "true"
