@@ -7,6 +7,8 @@ services:
     restart: unless-stopped
     ports:
       - '8080:8080'
+    dns:
+      - 192.168.50.4
     volumes:
       - /home/admin/trino/coordinator/etc/trino:/etc/trino
       - /home/admin/trino/catalog_configuration:/etc/trino/catalog
@@ -25,6 +27,8 @@ services:
       - /home/admin/trino/worker/etc/trino:/etc/trino
       - /home/admin/trino/catalog_configuration:/etc/trino/catalog
       - /home/admin/trino/shared:/etc/trino/conf
+    dns:
+      - 192.168.50.4
     deploy:
       mode: replicated
       replicas: 2
