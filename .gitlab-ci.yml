@@ -6,3 +6,4 @@ variables:
   SECRET_DETECTION_EXCLUDED_PATHS: "docs/**/*.md,tests/fixtures/**"
   # Optional: scan full history (slow, first time)
   SECRET_DETECTION_HISTORIC_SCAN: "true"
+  GIT_LFS_SKIP_SMUDGE: "1"
