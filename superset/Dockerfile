@@ -2,6 +2,24 @@ FROM apache/superset:latest@sha256:31d965435b462361d2b8207595eff28f54492778d0afd
 # Switching to root to install the required packages
 USER root
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    wget curl \
+    bzip2 unzip \
+    git \
+    dnsutils \
+    iputils-ping \
+    gfortran gcc \
+    openssh-client \
+    default-libmysqlclient-dev \
+    unixodbc unixodbc-dev \
+    libpq-dev libsasl2-dev libkrb5-dev \
+    libldap2-dev libssl-dev \
+    ca-certificates tzdata \
+    pkg-config \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN pip install --no-cache-dir --upgrade pip
 
 # Example: installing the MySQL driver to connect to the metadata database
@@ -12,9 +30,13 @@ RUN pip install --no-cache-dir \
     redis \
     mysqlclient \
     psycopg2-binary \
-    sqlalchemy-trino \
-    pyhive \
-    trino
+    sqlalchemy-trino trino \
+    "PyHive[hive]" thrift thrift_sasl sasl \
+    duckdb \ 
+    clickhouse-connect \
+    authlib python-ldap \
+    pandas numpy pyarrow \
+    boto3 s3fs minio
 
 # Updating Superset configuration
 # https://superset.apache.org/docs/configuration/configuring-superset/
