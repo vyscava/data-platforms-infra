@@ -20,4 +20,12 @@ services:
       CATALOG_URI: jdbc:postgresql://${POSTGRESS_HOSTNAME}:${POSTGRESS_HOSTNAME_PORT}/${PSQL_ICEBERG_DB}
       CATALOG_JDBC_USER: ${PSQL_ICEBERG_USER}
       CATALOG_JDBC_PASSWORD: ${PSQL_ICEBERG_PASSWORD}
+    # Synology Container Manager uses as default log.db, however, due my fluentbit flow
+    # I am reading logs from json files, flagging it here in the compose to force Synlogy 
+    # to save logs the way I need them.
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
 

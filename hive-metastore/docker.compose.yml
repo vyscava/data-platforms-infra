@@ -22,6 +22,14 @@ services:
       - /volume2/dockers/hive_metastore/configuration/metastore/jdbc_drivers/mysql-connector-java-8.0.30.jar:/opt/hive/lib/mysql-connector-java-8.0.30.jar:ro
     mem_limit: 500m
     # cpus: 2.0
+    # Synology Container Manager uses as default log.db, however, due my fluentbit flow
+    # I am reading logs from json files, flagging it here in the compose to force Synlogy 
+    # to save logs the way I need them.
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
 
 volumes:
   metastore-data:
