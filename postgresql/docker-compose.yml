@@ -20,6 +20,14 @@ services:
     # cpus: 2.0
     networks:
       - postgres-stack
+    # Synology Container Manager uses as default log.db, however, due my fluentbit flow
+    # I am reading logs from json files, flagging it here in the compose to force Synlogy 
+    # to save logs the way I need them.
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   pgadmin:
     image: dpage/pgadmin4:latest@sha256:2c7d73e13bd6c30b1d53e4c25d0d6d81adbd0799c4f4d6a09efc5d68fca5d16d
@@ -37,6 +45,14 @@ services:
         condition: service_healthy
     networks:
       - postgres-stack
+    # Synology Container Manager uses as default log.db, however, due my fluentbit flow
+    # I am reading logs from json files, flagging it here in the compose to force Synlogy 
+    # to save logs the way I need them.
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
 
 volumes:
   pgadmin_data:
