@@ -2,7 +2,7 @@ name: hive-metastore-stack
 services:
   hive-metastore:
     # https://hub.docker.com/r/apache/hive
-    image: apache/hive:4.0.0@sha256:000f23613c94538e1178dbbd2c001523b3f76df3aa1506e4b5cbd46b3a5d5041
+    image: apache/hive:4.0.0@sha256:c0b241c544d341c16a6d8cafcb801a071be9b02054a5add255e9a0e826095e88
     container_name: hive-metastore
     restart: unless-stopped
     ports:
