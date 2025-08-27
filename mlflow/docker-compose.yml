@@ -1,0 +1,39 @@
+name: mlflow-stack
+services:
+  mlflow:
+    build: .
+    container_name: mlflow
+    restart: unless-stopped
+    user: "1024:100"
+    environment:
+      # Required by MLflow auth
+      MLFLOW_FLASK_SERVER_SECRET_KEY: ${MLFLOW_FLASK_SERVER_SECRET_KEY}
+      # Tell MLflow where the auth config lives (copied in Dockerfile)
+      MLFLOW_AUTH_CONFIG_PATH: /home/mlflow/auth_config.ini
+      # Tracking backend (metadata) – you said Postgres instead of SQLite
+      MLFLOW_BACKEND_STORE_URI: postgresql+psycopg2://${PSQL_MLFLOW_USER}:${PSQL_MLFLOW_PASSWORD}@${POSTGRESS_HOSTNAME}:${POSTGRESS_HOSTNAME_PORT}/${PSQL_MLFLOW_DB}
+      # Artifact store (MinIO/S3)
+      MLFLOW_ARTIFACTS_DESTINATION: s3://mlflow-artifacts
+      AWS_REGION: ${AWS_REGION}
+      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+    ports:
+      - "6000:5000"
+    dns:
+      - 192.168.50.4
+    volumes:
+      - ./auth_config.ini:/home/mlflow/auth_config.ini
+    mem_limit: 4G
+    # Synology Container Manager uses as default log.db, however, due my fluentbit flow
+    # I am reading logs from json files, flagging it here in the compose to force Synlogy 
+    # to save logs the way I need them.
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "1"
+    #       memory: 1G
