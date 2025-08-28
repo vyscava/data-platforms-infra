@@ -7,7 +7,7 @@ services:
       PGUSER: ${POSTGRES_USER}
       PGPASSWORD: ${POSTGRES_PASSWORD}
       PGDATABASE: postgres
-      PGHOST: localhost
+      PGHOST: 192.168.50.2
       PGPORT: 5434
     volumes:
       - ./fix_collation.sh:/usr/local/bin/fix_collation.sh:ro
