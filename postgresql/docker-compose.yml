@@ -44,7 +44,7 @@ services:
       PGHOST: localhost
       PGPORT: 5432
     volumes:
-      - .fix_collation.sh:/usr/local/bin/fix_collation.sh:ro
+      - ./fix_collation.sh:/usr/local/bin/fix_collation.sh:ro
     entrypoint: ["/bin/sh","-lc"]
     command: ["/usr/local/bin/fix_collation.sh"]
     logging:
