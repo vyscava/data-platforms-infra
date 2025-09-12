@@ -1,4 +1,4 @@
-FROM apache/superset:latest@sha256:92e6bf4111b2192b2ff3b1b74252ae957f7237989662065c403afb3623da7e51
+FROM apache/superset:latest@sha256:09735adaae3945c5a8fabbeca31a7954c8c74de195702ba61622aee8604d5c55
 # Switching to root to install the required packages
 USER root
 
