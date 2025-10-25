@@ -1,7 +1,7 @@
 name: postgres-stack
 services:
   postgres:
-    image: postgres:17@sha256:29e0bb09c8e7e7fc265ea9f4367de9622e55bae6b0b97e7cce740c2d63c2ebc0
+    image: postgres:17@sha256:b480430782a9bd1c8a6835fb5b70f89f34a70132c2f6182e534f65688bce063b
     container_name: postgres
     restart: unless-stopped
     environment:
