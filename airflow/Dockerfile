@@ -1,4 +1,4 @@
-FROM apache/airflow:3.1.1@sha256:a880182b7a07a7dd8bb9b7b9291c0317b52be97f0bfd0af6628691f2b87594b2
+FROM apache/airflow:3.1.2@sha256:7d409a7076a512ba43dd501bc47bd5ccb4280eee0c8c9a17b78214b2c47a92aa
 
 USER root
 
