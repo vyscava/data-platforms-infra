@@ -12,12 +12,12 @@ Data Sources  -->  Airflow (orchestrates jobs) -----------------------------+
                    |        \                                               |
                    v         \--> MLflow (experiments & artifacts)          |
              Iceberg REST Catalog (metadata)                                |
-                   |                                                       |
-                   v                                                       |
+                   |                                                        |
+                   v                                                        |
             MinIO Object Storage  <---------  Hive Metastore (legacy tables)|
-                   |                                                       |
-                   v                                                       |
-     Trino (SQL lakehouse)  -->  Superset (dashboards & storytelling)      |
+                   |                                                        |
+                   v                                                        |
+     Trino (SQL lakehouse)  -->  Superset (dashboards & storytelling)       |
                    |
                    v
            Stakeholder insights
