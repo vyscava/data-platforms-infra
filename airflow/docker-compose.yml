@@ -45,7 +45,7 @@ x-airflow-common:
 name: airflow-stack
 services:
   redis:
-    image: redis:latest
+    image: redis:latest@sha256:3906b477e4b60250660573105110c28bfce93b01243eab37610a484daebceb04
     container_name: redis
     restart: unless-stopped
     hostname: redis
