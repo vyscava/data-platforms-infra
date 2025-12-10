@@ -1,5 +1,87 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
-  "assignees": ["vitorgarbim", "root"]
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits"
+  ],
+  "platform": "gitlab",
+  "assignees": ["vitorgarbim", "root"],
+  "timezone": "America/Chicago",
+  "schedule": ["after 20:00 and before 06:00 on every weekday"],
+  "prHourlyLimit": 4,
+  "prConcurrentLimit": 12,
+  "docker": {
+    "pinDigests": true
+  },
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["digest"],
+      "automerge": true,
+      "automergeType": "branch",
+      "platformAutomerge": true,
+      "labels": ["renovate/docker", "digest-update"]
+    },
+    {
+      "matchManagers": ["docker-compose", "dockerfile"],
+      "matchPaths": ["airflow/**"],
+      "groupName": "airflow images",
+      "labels": ["stack:airflow"]
+    },
+    {
+      "matchManagers": ["docker-compose", "dockerfile"],
+      "matchPaths": ["spark/**"],
+      "groupName": "spark images",
+      "labels": ["stack:spark"]
+    },
+    {
+      "matchManagers": ["docker-compose", "dockerfile"],
+      "matchPaths": ["superset/**"],
+      "groupName": "superset images",
+      "labels": ["stack:superset"]
+    },
+    {
+      "matchManagers": ["docker-compose", "dockerfile"],
+      "matchPaths": ["trino/**"],
+      "groupName": "trino images",
+      "labels": ["stack:trino"]
+    },
+    {
+      "matchManagers": ["docker-compose", "dockerfile"],
+      "matchPaths": ["mlflow/**"],
+      "groupName": "mlflow images",
+      "labels": ["stack:mlflow"]
+    },
+    {
+      "matchManagers": ["docker-compose", "dockerfile"],
+      "matchPaths": ["minio/**"],
+      "groupName": "minio images",
+      "labels": ["stack:minio"]
+    },
+    {
+      "matchManagers": ["docker-compose", "dockerfile"],
+      "matchPaths": ["iceberg-rest/**"],
+      "groupName": "iceberg-rest images",
+      "labels": ["stack:iceberg-rest"]
+    },
+    {
+      "matchManagers": ["docker-compose", "dockerfile"],
+      "matchPaths": ["hive-metastore/**"],
+      "groupName": "hive-metastore images",
+      "labels": ["stack:hive-metastore"]
+    },
+    {
+      "matchManagers": ["docker-compose", "dockerfile"],
+      "matchPaths": ["postgresql/**"],
+      "groupName": "postgresql images",
+      "labels": ["stack:postgresql"]
+    },
+    {
+      "matchManagers": ["pip_requirements"],
+      "groupName": "python requirements",
+      "rangeStrategy": "bump",
+      "labels": ["renovate/python"]
+    }
+  ]
 }
