@@ -1,7 +1,7 @@
 name: postgres-stack
 services:
   postgres:
-    image: postgres:17@sha256:29e0bb09c8e7e7fc265ea9f4367de9622e55bae6b0b97e7cce740c2d63c2ebc0
+    image: postgres:17@sha256:dca7512acaa113409df7e40d977d801e53c0c8088e45d4311a45b4065ccfdcd3
     container_name: postgres
     restart: unless-stopped
     environment:
@@ -30,7 +30,7 @@ services:
         max-file: "5"
 
   pgadmin:
-    image: dpage/pgadmin4:latest@sha256:8c128407f45f1c582eda69e71da1a393237388469052e3cc1e6ae4a475e12b70
+    image: dpage/pgadmin4:latest@sha256:50700ac17936d0227f9e3e4bb086a91efb67064debc4b4737c35545bf1564088
     container_name: pgadmin
     restart: unless-stopped
     environment:
