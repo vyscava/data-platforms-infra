@@ -1,7 +1,7 @@
 name: postgres-collation-stack
 services:
   pg-collation-fix:
-    image: postgres:17@sha256:bac8128cd62a35471a1e97966861aa2ac88c8d2f408767a425ae70695a607c99
+    image: postgres:17@sha256:11cf4dcbc5181663d0227de04b70b8b48e59560755af23f2b279ba88ad8937b6
     restart: "no"
     environment:
       PGUSER: ${POSTGRES_USER}
